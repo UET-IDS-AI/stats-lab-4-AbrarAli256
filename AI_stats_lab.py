@@ -80,20 +80,16 @@ def pdf_validation_plot():
         integral_value
         is_valid_pdf
     """
-    # Define PDF
     def f(x):
         return 2 * x * np.exp(-x**2)
 
-    # STEP 1: Non-negativity check (theoretical)
-    # f(x) >= 0 for x >= 0
-
-    # STEP 2: Compute integral from 0 to infinity
+    # Compute integral
     integral_value, _ = quad(f, 0, np.inf)
 
-    # STEP 3: Check validity
-    is_valid_pdf = np.isclose(integral_value, 1)
+    # Convert to Python boolean
+    is_valid_pdf = bool(np.isclose(integral_value, 1))
 
-    # STEP 4: Plot
+    # Plot
     x = np.linspace(0, 3, 500)
     y = f(x)
 
