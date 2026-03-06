@@ -36,6 +36,17 @@ def cdf_probabilities():
         analytic_interval
         simulated_gt5
     """
+    # Analytical values
+    analytic_gt5 = math.exp(-5)
+    analytic_lt5 = 1 - math.exp(-5)
+    analytic_interval = math.exp(-3) - math.exp(-7)
+
+    # Monte Carlo Simulation
+    samples = np.random.exponential(scale=1, size=100000)
+
+    simulated_gt5 = np.mean(samples > 5)
+
+    return analytic_gt5, analytic_lt5, analytic_interval, simulated_gt5
 
     raise NotImplementedError
 
@@ -69,6 +80,30 @@ def pdf_validation_plot():
         integral_value
         is_valid_pdf
     """
+    # Define PDF
+    def f(x):
+        return 2 * x * np.exp(-x**2)
+
+    # STEP 1: Non-negativity check (theoretical)
+    # f(x) >= 0 for x >= 0
+
+    # STEP 2: Compute integral from 0 to infinity
+    integral_value, _ = quad(f, 0, np.inf)
+
+    # STEP 3: Check validity
+    is_valid_pdf = np.isclose(integral_value, 1)
+
+    # STEP 4: Plot
+    x = np.linspace(0, 3, 500)
+    y = f(x)
+
+    plt.plot(x, y)
+    plt.title("PDF: f(x) = 2x e^(-x^2)")
+    plt.xlabel("x")
+    plt.ylabel("f(x)")
+    plt.show()
+
+    return integral_value, is_valid_pdf
 
     raise NotImplementedError
 
@@ -100,6 +135,18 @@ def exponential_probabilities():
         simulated_gt5
         simulated_interval
     """
+    # STEP 1: Analytical probabilities
+    analytic_gt5 = math.exp(-5)
+    analytic_interval = math.exp(-1) - math.exp(-3)
+
+    # STEP 2: Monte Carlo simulation
+    samples = np.random.exponential(scale=1, size=100000)
+
+    # STEP 3: Estimate probabilities
+    simulated_gt5 = np.mean(samples > 5)
+    simulated_interval = np.mean((samples > 1) & (samples < 3))
+
+    return analytic_gt5, analytic_interval, simulated_gt5, simulated_interval
 
     raise NotImplementedError
 
@@ -136,5 +183,20 @@ def gaussian_probabilities():
         simulated_le12
         simulated_interval
     """
+    mu = 10
+    sigma = 2
+
+    # STEP 1 & 2: Analytical probabilities
+    analytic_le12 = norm.cdf(12, mu, sigma)
+    analytic_interval = norm.cdf(12, mu, sigma) - norm.cdf(8, mu, sigma)
+
+    # STEP 3: Simulation
+    samples = np.random.normal(mu, sigma, 100000)
+
+    # STEP 4: Estimated probabilities
+    simulated_le12 = np.mean(samples <= 12)
+    simulated_interval = np.mean((samples > 8) & (samples < 12))
+
+    return analytic_le12, analytic_interval, simulated_le12, simulated_interval
 
     raise NotImplementedError
